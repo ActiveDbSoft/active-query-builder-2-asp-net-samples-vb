@@ -1,6 +1,7 @@
-
-Microsoft Visual Studio Solution File, Format Version 10.00
-# Visual Studio 2008
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 15
+VisualStudioVersion = 15.0.26730.12
+MinimumVisualStudioVersion = 10.0.40219.1
 Project("{F184B08F-C81C-45F6-A57F-5ABD9991F28F}") = "Simple Offline Demo", "Simple Offline Demo.vbproj", "{52EC4090-771D-4C19-A712-2EADEDC7B9BC}"
 EndProject
 Global
@@ -16,5 +17,8 @@ Global
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {9223A2CE-F28D-4D0D-BAC7-BFDD740B3BC4}
 	EndGlobalSection
 EndGlobal
