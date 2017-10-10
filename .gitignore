@@ -1,5 +1,7 @@
 .vs
+*.vbproj.user
+UpgradeLog.htm
 packages
-
 bin/*
 obj/*
+Log.txt
