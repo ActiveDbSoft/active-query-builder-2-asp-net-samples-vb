@@ -12,6 +12,7 @@ Imports ActiveDatabaseSoftware.ActiveQueryBuilder
 Imports ActiveDatabaseSoftware.ActiveQueryBuilder.QueryTransformer
 Imports ActiveDatabaseSoftware.ActiveQueryBuilder.Web.Mvc.Filters
 Imports ActiveDatabaseSoftware.ActiveQueryBuilder.Web.Server
+Imports ActiveDatabaseSoftware.ActiveQueryBuilder.Web.Server.Models
 
 Namespace Controllers
 	Public Class HomeController
@@ -54,7 +55,7 @@ Namespace Controllers
 						cmd.Connection.Close()
 					End If
 
-					For Each paramDto As var In SessionStore.Current.ClientQueryParams
+					For Each paramDto As QueryParamDto In SessionStore.Current.ClientQueryParams
 						cmd.Parameters.AddWithValue(paramDto.Name, paramDto.Value)
 					Next
 
@@ -94,7 +95,7 @@ Namespace Controllers
 			Return CInt(cmd.ExecuteScalar())
 		End Function
 
-		Private Function ConvertToDictionary(dtObject As DataTable) As List(Of dynamic)
+		Private Function ConvertToDictionary(dtObject As DataTable) As List(Of Object)
 			Dim columns = dtObject.Columns.Cast(Of DataColumn)()
 
 			Dim dictionaryList = dtObject.AsEnumerable().[Select](Function(dataRow) columns.[Select](Function(column) New With { _
@@ -104,11 +105,11 @@ Namespace Controllers
 
 			Dim list = dictionaryList.ToList(Of IDictionary)()
 
-			Dim result = New List(Of dynamic)()
-			For Each emprow As var In list
+			Dim result = New List(Of Object)()
+			For Each emprow As IDictionary In list
 				Dim row = DirectCast(New ExpandoObject(), IDictionary(Of String, Object))
 
-				For Each keyValuePair As var In DirectCast(emprow, Dictionary(Of String, Object))
+				For Each keyValuePair As KeyValuePair(Of String, Object) In DirectCast(emprow, Dictionary(Of String, Object))
 					row.Add(keyValuePair)
 				Next
 				result.Add(row)
@@ -136,7 +137,7 @@ Namespace Controllers
 				' you may load metadata from the database connection using live database connection and metadata provider
 				Dim connection = CreateConnection(filterContext.HttpContext.Server)
 				queryBuilder.MetadataProvider = New OLEDBMetadataProvider() With { _
-					Key .Connection = connection _
+					.Connection = connection _
 				}
 			Catch ex As Exception
 				Dim message As String = "Can't setup metadata provider!"

@@ -1,4 +1,6 @@
+Imports System.Configuration
 Imports System.Web.Mvc
+Imports System.IO
 Imports ActiveDatabaseSoftware.ActiveQueryBuilder
 Imports ActiveDatabaseSoftware.ActiveQueryBuilder.Web.Mvc.Filters
 Imports ActiveDatabaseSoftware.ActiveQueryBuilder.Web.Server
@@ -25,7 +27,7 @@ Namespace Controllers
 			' Load MetaData from XML document
 			Try
 				Dim path__1 = ConfigurationManager.AppSettings("XmlMetaData")
-				Dim xml = Path.Combine(Server.MapPath("~"), path__1)
+				Dim xml = Path.Combine(filterContext.HttpContext.Server.MapPath("~"), path__1)
 				queryBuilder.MetadataContainer.ImportFromXML(xml)
 
 				queryBuilder.MetadataStructure.Refresh()

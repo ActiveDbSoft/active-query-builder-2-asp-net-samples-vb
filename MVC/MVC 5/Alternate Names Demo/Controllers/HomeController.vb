@@ -56,19 +56,19 @@ Namespace Controllers
 		Public Sub OnSQLUpdated(sender As Object, e As EventArgs)
 			Dim queryBuilder As QueryBuilder = SessionStore.Current.QueryBuilder
 			Dim plainTextSQLBuilder As New PlainTextSQLBuilder() With { _
-				Key .QueryBuilder = queryBuilder, _
-				Key .KeywordFormat = KeywordFormat.UpperCase, _
-				Key .UseAltNames = False _
+				.QueryBuilder = queryBuilder, _
+				.KeywordFormat = KeywordFormat.UpperCase, _
+				.UseAltNames = False _
 			}
 			Dim plainTextSQLBuilderWithAltNames As New PlainTextSQLBuilder() With { _
-				Key .QueryBuilder = queryBuilder, _
-				Key .KeywordFormat = KeywordFormat.UpperCase, _
-				Key .UseAltNames = True _
+				.QueryBuilder = queryBuilder, _
+				.KeywordFormat = KeywordFormat.UpperCase, _
+				.UseAltNames = True _
 			}
 
 			SessionStore.Current.Exchange.Data = New ExchangeClass() With { _
-				Key .SQL = plainTextSQLBuilder.SQL, _
-				Key .AlternateSQL = plainTextSQLBuilderWithAltNames.SQL _
+				.SQL = plainTextSQLBuilder.SQL, _
+				.AlternateSQL = plainTextSQLBuilderWithAltNames.SQL _
 			}
 		End Sub
 	End Class
