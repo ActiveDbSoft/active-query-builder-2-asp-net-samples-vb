@@ -24,7 +24,7 @@ Namespace Controllers
 			Dim model As Object = Nothing
 
 			Dim queryBuilder = SessionStore.Current.QueryBuilder
-			Dim queryTransformer = SessionStore.Current.QueryTransformer
+			Dim queryTransformer As QueryTransformer = SessionStore.Current.QueryTransformer
 
 			queryTransformer.Sortings.Clear()
 			If String.IsNullOrEmpty(sortdir) Then
@@ -94,18 +94,17 @@ Namespace Controllers
 		End Function
 
 		Private Function ConvertToDictionary(dtObject As DataTable) As List(Of Object)
-			Dim columns = dtObject.Columns.Cast(Of DataColumn)()
+			Dim columns As IEnumerable(Of DataColumn) = dtObject.Columns.Cast(Of DataColumn)()
 
-			Dim dictionaryList = dtObject.AsEnumerable().[Select](Function(dataRow) columns.[Select](Function(column) New With { _
-				Key .Column = column.ColumnName, _
-				Key .Value = dataRow(column) _
+			Dim dictionaryList As List(Of Dictionary(Of string, object)) = dtObject.AsEnumerable().[Select](Function(dataRow) columns.[Select](Function(column) New With { _
+				.Column = column.ColumnName, _
+				.Value = dataRow(column) _
 			}).ToDictionary(Function(data) data.Column, Function(data) data.Value)).ToList()
+            
+			Dim result As List(Of Object) = New List(Of Object)()
 
-			Dim list = dictionaryList.ToList(Of IDictionary)()
-
-			Dim result = New List(Of Object)()
-			For Each emprow As IDictionary In list
-				Dim row = DirectCast(New ExpandoObject(), IDictionary(Of String, Object))
+            For Each emprow As IDictionary In dictionaryList
+				Dim row As IDictionary(Of String, Object) = DirectCast(New ExpandoObject(), IDictionary(Of String, Object))
 
 				For Each keyValuePair As KeyValuePair(Of String, Object) In DirectCast(emprow, Dictionary(Of String, Object))
 					row.Add(keyValuePair)
